@@ -14,11 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static jy.demo.security.jwt.provider.JwtTokenUtils.*;
+import static jy.demo.security.jwt.provider.JwtTokenValue.*;
 
 
 @Component
 public class JwtDecoder {
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public Map<String, String> decode(String token){

@@ -1,5 +1,7 @@
 package jy.demo.security.jwt.provider;
 
+import jy.demo.repository.UserRepository;
+import jy.demo.security.UserDetailsImpl;
 import jy.demo.security.jwt.filter.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,12 +16,12 @@ import java.util.Map;
 public class JwtProvider implements AuthenticationProvider {
 
     private final JwtDecoder jwtDecoder;
-//    private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public JwtProvider(JwtDecoder jwtDecoder){
+    public JwtProvider(JwtDecoder jwtDecoder, UserRepository userRepository){
         this.jwtDecoder = jwtDecoder;
-//        this.userRepository = userRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -28,9 +30,8 @@ public class JwtProvider implements AuthenticationProvider {
         String token = (String) authentication.getPrincipal();
         Map<String, String> jwtData = jwtDecoder.decode(token);
 
-//        UserDetailsImpl userDetails = new UserDetailsImpl(jwtData);
-//        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        return new UsernamePasswordAuthenticationToken(null, null, null);
+        UserDetailsImpl userDetails = new UserDetailsImpl(jwtData);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     @Override
