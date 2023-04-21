@@ -1,7 +1,21 @@
 pipeline {
     agent any
 
+	environment {
+		GPG_KEY = credentials('gpg-key')
+		GPG_PASS = credentials('gpg-password')
+	}
+
     stages {
+        stage('git secret') {
+            steps {
+                script {
+					sh 'gpg --batch --import ${GPG_KEY}'
+					sh 'git secret reveal -p ${GPG_PASS}'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Building the application...'
@@ -23,6 +37,7 @@ pipeline {
                 }
             }
         }
+
 		stage('deploy') {
 			steps {
 				script {

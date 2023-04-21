@@ -6,6 +6,5 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 
 public interface JwtAuthentication {
     AuthenticationProvider getProvider();
-//    String generateJwt(CustomOAuth2User userInfo);
 
 }

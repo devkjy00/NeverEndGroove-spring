@@ -19,6 +19,13 @@ public class JwtTokenValue {
     public static final String CLAIM_USER_ID= "USER_ID";
     public static final String CLAIM_USER_EMAIL = "USER_EMAIL";
 
-//    @Value("${jwt.secret})
     public static String JWT_SECRET;
+
+
+    @Value("${secret.jwt.key}")
+    public void setName(String key) {
+        this.JWT_SECRET = key;
+    }
+
+
 }

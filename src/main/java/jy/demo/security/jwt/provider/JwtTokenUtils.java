@@ -36,8 +36,4 @@ public final class JwtTokenUtils {
         return Algorithm.HMAC256(JWT_SECRET);
     }
 
-//    public void setName(String key) {
-//        this.JWT_SECRET = key;
-//        JWT_SECRET = "test";
-//    }
 }
