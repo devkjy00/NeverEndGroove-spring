@@ -26,7 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Builder
 @Table(name = "_user")
 @DynamicUpdate
-@ToString(of = {"id", "email", "username", "social"})
+@ToString(of = {"id", "email", "username"})
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

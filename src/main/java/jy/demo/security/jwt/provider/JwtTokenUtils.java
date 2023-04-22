@@ -14,7 +14,7 @@ import static jy.demo.security.jwt.provider.JwtTokenValue.*;
 @Component
 public final class JwtTokenUtils {
 
-    public static String generateJwtToken(CustomOAuth2User userInfo) {
+    public String generateJwtToken(CustomOAuth2User userInfo) {
         String token = null;
         try {
             token = JWT.create()
@@ -32,7 +32,7 @@ public final class JwtTokenUtils {
         return token;
     }
 
-    private static Algorithm generateAlgorithm() {
+    private Algorithm generateAlgorithm() {
         return Algorithm.HMAC256(JWT_SECRET);
     }
 

@@ -6,6 +6,9 @@ import jy.demo.security.jwt.filter.FilterSkipMatcher;
 import jy.demo.security.jwt.filter.HeaderTokenExtractor;
 import jy.demo.security.jwt.filter.JwtAuthFilter;
 import jy.demo.security.jwt.provider.JwtAuthentication;
+import jy.demo.security.oauth2.CustomAuthenticationFailureHandler;
+import jy.demo.security.oauth2.CustomAuthenticationSuccessHandler;
+import jy.demo.security.oauth2.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,12 +24,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthentication jwtAuthentication;
     private final HeaderTokenExtractor headerTokenExtractor;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Autowired
     public SecurityConfig(JwtAuthentication jwtAuthentication,
-        HeaderTokenExtractor headerTokenExtractor) {
+        HeaderTokenExtractor headerTokenExtractor,
+        CustomOAuth2UserService customOAuth2UserService,
+        CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+        CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.jwtAuthentication = jwtAuthentication;
         this.headerTokenExtractor = headerTokenExtractor;
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
 
@@ -47,13 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
-//        http
-//            .oauth2Login()
-//            .defaultSuccessUrl("/api/main")
-//            .successHandler(customAuthenticationSuccessHandler)
-//            .failureHandler(customAuthenticationFailureHandler)
-//            .userInfoEndpoint()
-//            .userService(customOAuth2UserService);
+        http
+            .oauth2Login()
+            .defaultSuccessUrl("/main")
+            .successHandler(customAuthenticationSuccessHandler)
+            .failureHandler(customAuthenticationFailureHandler)
+            .userInfoEndpoint()
+            .userService(customOAuth2UserService);
     }
 
 

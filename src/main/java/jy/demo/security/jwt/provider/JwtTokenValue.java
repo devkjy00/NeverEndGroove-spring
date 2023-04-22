@@ -22,7 +22,7 @@ public class JwtTokenValue {
     public static String JWT_SECRET;
 
 
-    @Value("${secret.jwt.key}")
+    @Value("${jwt.key}")
     public void setName(String key) {
         this.JWT_SECRET = key;
     }
