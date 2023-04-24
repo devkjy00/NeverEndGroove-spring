@@ -40,7 +40,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
 
-        response.sendRedirect(FRONTEND_URL);
+        response.sendRedirect(FRONTEND_URL + ":8080");
 
     }
 

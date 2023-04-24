@@ -2,9 +2,11 @@ package jy.demo.security.jwt.provider;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Getter
-public class JwtTokenValue {
+@Component
+public final class JwtTokenValue {
 
     public static final int SEC = 1;
     public static final int MINUTE = 60 * SEC;
@@ -23,7 +25,7 @@ public class JwtTokenValue {
 
 
     @Value("${jwt.key}")
-    public void setName(String key) {
+    public void setJwtSecret(String key) {
         this.JWT_SECRET = key;
     }
 

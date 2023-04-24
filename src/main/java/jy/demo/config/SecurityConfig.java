@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -41,6 +42,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
+
+    @Override
+    public void configure(WebSecurity web){
+        web
+            .ignoring()
+            .antMatchers("/h2-console/**");
+    }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -73,9 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> skipPathList = new ArrayList<>();
 
         // 회원 관리 API 허용
-        skipPathList.add("POST,/signup");
-        skipPathList.add("POST,/login");
-        skipPathList.add("GET,/login");
+        skipPathList.add("POST,/signup/**");
+        skipPathList.add("POST,/login/**");
+        skipPathList.add("GET,/login/**");
         skipPathList.add("GET,/main");
         skipPathList.add("GET,/test");
 
