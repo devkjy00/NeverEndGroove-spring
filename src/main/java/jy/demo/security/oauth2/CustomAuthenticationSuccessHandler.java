@@ -2,6 +2,7 @@ package jy.demo.security.oauth2;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jy.demo.security.jwt.provider.JwtAuthenticationImpl;
@@ -33,17 +34,14 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         log.info("social login success");
 
         String jwt = jwtAuthentication.generateToken((CustomOAuth2User) authentication.getPrincipal());
-        String url = makeRedirectUrl(jwt);
 
-        getRedirectStrategy().sendRedirect(request, response, url);
+        Cookie cookie = new Cookie("Authorization", jwt);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        response.sendRedirect(FRONTEND_URL);
 
     }
 
-    private String makeRedirectUrl(String jwt) {
-
-        return UriComponentsBuilder
-            .fromUriString(FRONTEND_URL + "/login/callback?" + "jwt=" + jwt)
-            .build()
-            .toUriString();
-    }
 }

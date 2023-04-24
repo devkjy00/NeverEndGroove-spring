@@ -16,12 +16,10 @@ import java.util.Map;
 public class JwtProvider implements AuthenticationProvider {
 
     private final JwtDecoder jwtDecoder;
-    private final UserRepository userRepository;
 
     @Autowired
-    public JwtProvider(JwtDecoder jwtDecoder, UserRepository userRepository){
+    public JwtProvider(JwtDecoder jwtDecoder){
         this.jwtDecoder = jwtDecoder;
-        this.userRepository = userRepository;
     }
 
 
