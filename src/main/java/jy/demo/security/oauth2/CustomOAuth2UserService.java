@@ -1,5 +1,7 @@
 package jy.demo.security.oauth2;
 
+import jy.demo.model.User;
+import jy.demo.service.TokenCacheService;
 import jy.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -13,12 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    private final UserService userService;
+    private final TokenCacheService tokenCacheService;
+
+
     @Autowired
-    public CustomOAuth2UserService(UserService userService) {
+    public CustomOAuth2UserService(UserService userService, TokenCacheService tokenCacheService) {
         this.userService = userService;
+        this.tokenCacheService = tokenCacheService;
     }
 
-    private final UserService userService;
 
 
     @Override
@@ -28,7 +34,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User defaultOAuth2User = defaultOAuth2UserService.loadUser(userRequest);
         CustomOAuth2User customOAuth2User = new GoogleOAuth2User(defaultOAuth2User.getAttributes());
 
-        userService.saveOrUpdate(customOAuth2User);
+        User user = userService.saveOrUpdate(customOAuth2User);
+
+        String accessToken = userRequest.getAccessToken().getTokenValue();
+        tokenCacheService.storeToken(user.getId(), accessToken);
 
         return customOAuth2User;
     }
