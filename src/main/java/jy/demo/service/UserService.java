@@ -20,12 +20,12 @@ public class UserService {
 
 
     @Transactional
-    public void saveOrUpdate(CustomOAuth2User customOAuth2User) {
+    public User saveOrUpdate(CustomOAuth2User customOAuth2User) {
         User user = userRepository.findBySocialProviderKey(customOAuth2User.getSocialProviderKey())
             .map(savedUser -> savedUser.update(customOAuth2User))
             .orElse(customOAuth2User.toUser());
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
 }
