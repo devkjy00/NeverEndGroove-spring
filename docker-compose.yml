@@ -1,0 +1,25 @@
+version: "1.0"
+
+services:
+  spring:
+    build: .
+    image: neverendgroove-spring
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - REDIS_IP=redis
+    networks:
+      - redis-spring
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - redis-spring
+
+networks:
+  redis-spring:
